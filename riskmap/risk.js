@@ -51,7 +51,7 @@ var Risk = {
 
 		Risk.mapLayer.draw();
 
-		Risk.divideTerritories();
+//		Risk.divideTerritories();
 	},
 
 	/**
@@ -64,6 +64,15 @@ var Risk = {
 				data: TerritoryPathData[id].path,
 				id: id //set a unique id --> path.attrs.id
 			});
+
+//			modified by Shujian Ke
+			var armyObject = new Kinetic.Label({
+				x: ArmyPoints[id].x,
+				y: ArmyPoints[id].y,
+				draggable: false
+			})
+
+//
 
 			//Using a sprite image for territory names
 			//see: drawImage() -- https://developer.mozilla.org/en-US/docs/Canvas_tutorial/Using_images , and see Kinetic.Image() docs for more
@@ -85,6 +94,7 @@ var Risk = {
 				nameImg: territoryNameImg,
 				color: null,
 				neighbours: Neighbours[id],
+				army: armyObject,
 				armyNum: null
 			};
 		}
@@ -110,17 +120,30 @@ var Risk = {
 			
 			var path = Risk.Territories[t].path;
 			var nameImg = Risk.Territories[t].nameImg;
+			var army = Risk.Territories[t].army;
 			var group = new Kinetic.Group();
+//			modified by Shujian Ke
+			var text = new Kinetic.Text({
+            	text: "",
+            	fontSize: 15,
+                fontFamily: 'Calibri',
+                fill: 'black'
+			})
+			army.add(text);
+//
 
 			//We have to set up a group for proper mouseover on territories and sprite name images 
 			group.add(path);
 			group.add(nameImg);
+//			modified by Shujian Ke
+			group.add(army);
+//
 			Risk.mapLayer.add(group);
-		
+
 			//Basic animations 
 			//Wrap the 'path', 't' and 'group' variables inside a closure, and set up the mouseover / mouseout events for the demo
 			//when you make a bigger application you should move this functionality out from here, and maybe put these 'actions' in a seperate function/'class'
-			(function(path, t, group) {
+			(function(path, text, group) {
 				group.on('mouseover', function() {
 					path.setFill('#eee');
 					path.setOpacity(0.3);
@@ -133,13 +156,25 @@ var Risk = {
 					path.setOpacity(0.4);
 					group.moveTo(Risk.mapLayer);
 					Risk.topLayer.draw();
+					Risk.mapLayer.draw();
+
 				});
 
 				group.on('click', function() {
-					console.log(path.attrs.id);
-					location.hash = path.attrs.id;
+//					modified by Shujian Ke
+//					console.log(path.attrs.id);
+//					location.hash = path.attrs.id;
+					if (Risk.Territories[t].armyNum == null) {
+						Risk.Territories[t].armyNum = 1;
+					} else {
+						Risk.Territories[t].armyNum += 1;
+					}
+					text.setText(Risk.Territories[t].armyNum);
+					group.moveTo(Risk.topLayer);
+                    Risk.topLayer.drawScene();
+//
 				});
-			})(path, t, group);
+			})(path, text, group);
 		}				
 	},
 
