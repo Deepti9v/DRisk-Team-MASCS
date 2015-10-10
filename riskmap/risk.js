@@ -117,7 +117,6 @@ var Risk = {
 
 	drawTerritories: function() {
 		for (t in Risk.Territories) {
-			
 			var path = Risk.Territories[t].path;
 			var nameImg = Risk.Territories[t].nameImg;
 			var army = Risk.Territories[t].army;
@@ -131,8 +130,7 @@ var Risk = {
 			})
 			army.add(text);
 //
-
-			//We have to set up a group for proper mouseover on territories and sprite name images 
+			//We have to set up a group for proper mouseover on territories and sprite name images
 			group.add(path);
 			group.add(nameImg);
 //			modified by Shujian Ke
@@ -142,40 +140,43 @@ var Risk = {
 
 			//Basic animations 
 			//Wrap the 'path', 't' and 'group' variables inside a closure, and set up the mouseover / mouseout events for the demo
-			//when you make a bigger application you should move this functionality out from here, and maybe put these 'actions' in a seperate function/'class'
-			(function(path, text, group) {
-				group.on('mouseover', function() {
-					path.setFill('#eee');
-					path.setOpacity(0.3);
-					group.moveTo(Risk.topLayer);
-					Risk.topLayer.drawScene();
-				});
-
-				group.on('mouseout', function() {
-					path.setFill(Risk.Settings.colors[Risk.Territories[t].color]);
-					path.setOpacity(0.4);
-					group.moveTo(Risk.mapLayer);
-					Risk.topLayer.draw();
-					Risk.mapLayer.draw();
-
-				});
-
-				group.on('click', function() {
-//					modified by Shujian Ke
-//					console.log(path.attrs.id);
-//					location.hash = path.attrs.id;
-					if (Risk.Territories[t].armyNum == null) {
-						Risk.Territories[t].armyNum = 1;
-					} else {
-						Risk.Territories[t].armyNum += 1;
-					}
-					text.setText(Risk.Territories[t].armyNum);
-					group.moveTo(Risk.topLayer);
-                    Risk.topLayer.drawScene();
-//
-				});
-			})(path, text, group);
+			Risk.mouseFunction(path, t, text, group);
 		}				
+	},
+
+	mouseFunction: function(path, t, text, group) {
+
+    	group.on('mouseover', function() {
+        	path.setFill('#eee');
+           	path.setOpacity(0.3);
+            group.moveTo(Risk.topLayer);
+            Risk.topLayer.drawScene();
+        });
+
+		group.on('mouseout', function() {
+			path.setFill(Risk.Settings.colors[Risk.Territories[t].color]);
+			path.setOpacity(0.4);
+			group.moveTo(Risk.mapLayer);
+			Risk.topLayer.draw();
+			Risk.mapLayer.draw();
+		});
+
+		group.on('click', function() {
+//			modified by Shujian Ke
+//			console.log(path.attrs.id);
+//			location.hash = path.attrs.id;
+			if (Risk.Territories[t].armyNum == null) {
+				Risk.Territories[t].armyNum = 1;
+			} else {
+				Risk.Territories[t].armyNum += 1;
+			}
+//			x = event.clientX;
+			text.setText(Risk.Territories[t].armyNum);
+//			text.setText(x);
+			group.moveTo(Risk.topLayer);
+            Risk.topLayer.drawScene();
+//
+		});
 	},
 
 	divideTerritories: function() {
