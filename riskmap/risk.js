@@ -18,14 +18,21 @@ var Risk = {
 	 */
 	Territories: {},
 
+	Users: {},
+
 	stage: null,
 	mapLayer: null,
 	topLayer:  null,
 	backgroundLayer: null,
 
+	userNumber: 2,
+	initialTroopNumber: 40,
+	currentUser: 0,
+
 	init: function() {
 		//Initiate our main Territories Object, it contains essential data about the territories current state
 		Risk.setUpTerritoriesObj();
+		Risk.setUpUsersObj();
 
 		//Initiate a Kinetic stage
 		Risk.stage = new Kinetic.Stage({
@@ -50,7 +57,6 @@ var Risk = {
 		Risk.stage.add(Risk.topLayer);
 
 		Risk.mapLayer.draw();
-
 //		Risk.divideTerritories();
 	},
 
@@ -71,8 +77,15 @@ var Risk = {
 				y: ArmyPoints[id].y,
 				draggable: false
 			})
+			var text = new Kinetic.Text({
+               	text: "",
+                fontSize: 15,
+                fontFamily: 'Calibri',
+                fill: 'black'
+    		})
+//   			console.log(text.getText());
+    		armyObject.add(text);
 
-//
 
 			//Using a sprite image for territory names
 			//see: drawImage() -- https://developer.mozilla.org/en-US/docs/Canvas_tutorial/Using_images , and see Kinetic.Image() docs for more
@@ -88,6 +101,8 @@ var Risk = {
 
 			});
 
+			var group = new Kinetic.Group();
+
 			Risk.Territories[id] = {
 				name: TerritoryNames[id],
 				path: pathObject,
@@ -95,10 +110,30 @@ var Risk = {
 				color: null,
 				neighbours: Neighbours[id],
 				army: armyObject,
-				armyNum: null
+				armyNum: null,
+				group: group,
+				text: text
 			};
 		}
 		
+	},
+
+	setUpUsersObj: function() {
+		var colors = ['yellow', 'green', 'blue', 'red', 'purple', 'cyan'];
+		for (i = 0; i < Risk.userNumber; i++) {
+			var territories = [];
+			for (t in TerritoryNames) {
+				territories[t] = false;
+			}
+			Risk.Users[i] = {
+				color: colors[i],
+            	territoryCount: 0,
+            	territories: territories,
+            	cards: null,
+            	newArmies: 3
+			}
+		}
+
 	},
 
 	drawBackgroundImg: function() {
@@ -116,67 +151,114 @@ var Risk = {
 	},
 
 	drawTerritories: function() {
+
+//		a botton to start game
+		var rect = new Kinetic.Rect({
+        	width: 100,
+        	height: 50,
+         	fill: 'grey',
+        	strokeWidth: 5
+        });
+    	rect.setId('start');
+        Risk.mapLayer.add(rect);
+
+        rect.on('click', function() {
+        	Risk.startPhase(0);
+        	rect.off('click');
+        	rect.off('mouseover');
+        	rect.off('mouseout');
+        });
+        rect.on('mouseover', function() {
+        	rect.setOpacity(0.3);
+			rect.setFill('#eee');
+            rect.moveTo(Risk.topLayer);
+            Risk.topLayer.drawScene();
+        });
+        rect.on('mouseout', function() {
+            rect.setOpacity(0.4);
+			rect.setFill('grey');
+            rect.moveTo(Risk.mapLayer);
+            Risk.topLayer.draw();
+            Risk.mapLayer.draw();
+        });
+//
+
 		for (t in Risk.Territories) {
 			var path = Risk.Territories[t].path;
 			var nameImg = Risk.Territories[t].nameImg;
 			var army = Risk.Territories[t].army;
-			var group = new Kinetic.Group();
-//			modified by Shujian Ke
-			var text = new Kinetic.Text({
-            	text: "",
-            	fontSize: 15,
-                fontFamily: 'Calibri',
-                fill: 'black'
-			})
-			army.add(text);
-//
-			//We have to set up a group for proper mouseover on territories and sprite name images
+			var group = Risk.Territories[t].group;
+
+//			We have to set up a group for proper mouseover on territories and sprite name images
 			group.add(path);
 			group.add(nameImg);
-//			modified by Shujian Ke
 			group.add(army);
-//
-			Risk.mapLayer.add(group);
 
-			//Basic animations 
-			//Wrap the 'path', 't' and 'group' variables inside a closure, and set up the mouseover / mouseout events for the demo
-			Risk.mouseFunction(path, t, text, group);
-		}				
+			Risk.mapLayer.add(group);
+		}
 	},
+
+	startPhase: function() {
+		for (t in Risk.Territories) {
+			var path = Risk.Territories[t].path;
+			var text = Risk.Territories[t].text;
+			var group = Risk.Territories[t].group;
+//			console.log(text.getText());
+			Risk.mouseFunction(path, t, text, group);
+
+		}
+	},
+
 
 	mouseFunction: function(path, t, text, group) {
 
-    	group.on('mouseover', function() {
-        	path.setFill('#eee');
-           	path.setOpacity(0.3);
-            group.moveTo(Risk.topLayer);
-            Risk.topLayer.drawScene();
-        });
+		group.on('mouseover', function() {
+			if (Risk.Territories[t].color == null ||
+					Risk.Users[Risk.currentUser].color == Risk.Territories[t].color) {
+    			path.setFill('#eee');
+                path.setOpacity(0.3);
+                group.moveTo(Risk.topLayer);
+                Risk.topLayer.drawScene();
+        	}
+		});
 
 		group.on('mouseout', function() {
-			path.setFill(Risk.Settings.colors[Risk.Territories[t].color]);
-			path.setOpacity(0.4);
-			group.moveTo(Risk.mapLayer);
-			Risk.topLayer.draw();
-			Risk.mapLayer.draw();
+			if (Risk.Territories[t].color == null ||
+					Risk.Users[Risk.currentUser].color == Risk.Territories[t].color) {
+
+				path.setFill(Risk.Settings.colors[Risk.Territories[t].color]);
+            	path.setOpacity(0.4);
+            	group.moveTo(Risk.mapLayer);
+            	Risk.topLayer.draw();
+            	Risk.mapLayer.draw();
+            }
 		});
 
 		group.on('click', function() {
 //			modified by Shujian Ke
-//			console.log(path.attrs.id);
-//			location.hash = path.attrs.id;
-			if (Risk.Territories[t].armyNum == null) {
-				Risk.Territories[t].armyNum = 1;
-			} else {
-				Risk.Territories[t].armyNum += 1;
-			}
-//			x = event.clientX;
-			text.setText(Risk.Territories[t].armyNum);
-//			text.setText(x);
-			group.moveTo(Risk.topLayer);
+		if (Risk.Territories[t].color == null || Risk.Users[Risk.currentUser].color == Risk.Territories[t].color) {
+    		if (Risk.Territories[t].armyNum == null) {
+    			Risk.Territories[t].armyNum = 1;
+    			Risk.Territories[t].color = Risk.Users[Risk.currentUser].color;
+
+    			Risk.Users[Risk.currentUser].territoryCount += 1;
+    			Risk.Users[Risk.currentUser].territories[t] = true;
+    		} else {
+    			Risk.Territories[t].armyNum += 1;
+    		}
+    		Risk.Territories[t].path.setFill(
+                Risk.Settings.colors[Risk.Users[Risk.currentUser].color]);
+            Risk.Territories[t].path.setOpacity(0.4);
+
+    		text.setText(Risk.Territories[t].armyNum);
+    		group.moveTo(Risk.mapLayer);
             Risk.topLayer.drawScene();
+           	Risk.currentUser = (Risk.currentUser + 1) % Risk.userNumber;
+           	Risk.stage.draw();
+        }
 //
 		});
+
 	},
 
 	divideTerritories: function() {
@@ -232,5 +314,18 @@ var Risk = {
 			var randomNum = Math.floor(Math.random()*(colors.length)); 
 			return colors[randomNum];
 		}
-	}
+	},
+
+
+	deploymentPhase: function() {
+
+	},
+
+	attackingPhase: function() {
+
+	},
+
+	fortifyingPhase: function() {
+
+	},
 }
