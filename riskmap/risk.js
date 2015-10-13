@@ -28,6 +28,7 @@ var Risk = {
 	userNumber: 2,
 	initialTroopNumber: 40,
 	currentUser: 0,
+	newArmies: 0,
 
 	init: function() {
 		//Initiate our main Territories Object, it contains essential data about the territories current state
@@ -150,38 +151,127 @@ var Risk = {
 		Risk.backgroundLayer.add(img);
 	},
 
-	drawTerritories: function() {
+	phaseButton: function() {
 
-//		a botton to start game
-		var rect = new Kinetic.Rect({
-        	width: 100,
-        	height: 50,
-         	fill: 'grey',
-        	strokeWidth: 5
-        });
-    	rect.setId('start');
-        Risk.mapLayer.add(rect);
+//		a button to start game
+		var startText = new Kinetic.Text({
+        	text: "start",
+        	x: 0,
+        	y: 0,
+            fontSize: 30,
+            fontFamily: 'Calibri',
+            fill: 'black'
+    	});
+        Risk.mapLayer.add(startText);
 
-        rect.on('click', function() {
-        	Risk.startPhase(0);
-        	rect.off('click');
-        	rect.off('mouseover');
-        	rect.off('mouseout');
+        startText.on('click', function() {
+        	startText.setFontSize(30);
+        	startText.setFill('red');
+            Risk.mapLayer.draw();
+        	Risk.startPhase();
+        	startText.off('click');
+        	startText.off('mouseover');
+        	startText.off('mouseout');
         });
-        rect.on('mouseover', function() {
-        	rect.setOpacity(0.3);
-			rect.setFill('#eee');
-            rect.moveTo(Risk.topLayer);
-            Risk.topLayer.drawScene();
+        startText.on('mouseover', function() {
+        	startText.setFontSize(50);
+        	Risk.mapLayer.draw();
         });
-        rect.on('mouseout', function() {
-            rect.setOpacity(0.4);
-			rect.setFill('grey');
-            rect.moveTo(Risk.mapLayer);
-            Risk.topLayer.draw();
+        startText.on('mouseout', function() {
+            startText.setFontSize(30);
+            Risk.mapLayer.draw();
+        });
+
+//		a button to deploy
+		var deployText = new Kinetic.Text({
+        	text: "deploy",
+      		x: 100,
+            y: 0,
+            fontSize: 30,
+            fontFamily: 'Calibri',
+            fill: 'black'
+    	});
+        Risk.mapLayer.add(deployText);
+		deployText.on('click', function() {
+        	deployText.setFontSize(30);
+        	deployText.setFill('red');
+        	Risk.mapLayer.draw();
+        	Risk.deployPhase();
+        	deployText.off('click');
+        	deployText.off('mouseover');
+        	deployText.off('mouseout');
+        });
+        deployText.on('mouseover', function() {
+        	deployText.setFontSize(50);
+        	Risk.mapLayer.draw();
+        });
+        deployText.on('mouseout', function() {
+            deployText.setFontSize(30);
+            Risk.mapLayer.draw();
+        });
+
+//		a button to attack
+		var attackText = new Kinetic.Text({
+        	text: "attack",
+            fontSize: 30,
+            x: 200,
+            y: 0,
+            fontFamily: 'Calibri',
+            fill: 'black'
+    	});
+        Risk.mapLayer.add(attackText);
+		attackText.on('click', function() {
+        	attackText.setFontSize(30);
+        	attackText.setFill('red');
+        	Risk.mapLayer.draw();
+        	Risk.attackPhase();
+        	attackText.off('click');
+        	attackText.off('mouseover');
+        	attackText.off('mouseout');
+        });
+        attackText.on('mouseover', function() {
+        	attackText.setFontSize(50);
+        	Risk.mapLayer.draw();
+        });
+        attackText.on('mouseout', function() {
+            attackText.setFontSize(30);
             Risk.mapLayer.draw();
         });
 //
+//		a button to fortify
+		var fortifyText = new Kinetic.Text({
+        	text: "fortify",
+            fontSize: 30,
+            x: 300,
+            y: 0,
+            fontFamily: 'Calibri',
+            fill: 'black'
+    	});
+        Risk.mapLayer.add(fortifyText);
+		fortifyText.on('click', function() {
+        	fortifyText.setFontSize(30);
+        	fortifyText.setFill('red');
+        	Risk.mapLayer.draw();
+//        	Risk.startPhase(0);
+        	fortifyText.off('click');
+        	fortifyText.off('mouseover');
+        	fortifyText.off('mouseout');
+        });
+        fortifyText.on('mouseover', function() {
+        	fortifyText.setFontSize(50);
+        	Risk.mapLayer.draw();
+        });
+        fortifyText.on('mouseout', function() {
+            fortifyText.setFontSize(30);
+            Risk.mapLayer.draw();
+        });
+//
+
+	},
+
+	drawTerritories: function() {
+
+		Risk.phaseButton();
 
 		for (t in Risk.Territories) {
 			var path = Risk.Territories[t].path;
@@ -204,13 +294,35 @@ var Risk = {
 			var text = Risk.Territories[t].text;
 			var group = Risk.Territories[t].group;
 //			console.log(text.getText());
-			Risk.mouseFunction(path, t, text, group);
+			Risk.mouseFunction(path, t, text, group, 0);
+		}
+	},
 
+	deployPhase: function() {
+
+		Risk.newArmies = Risk.Users[Risk.currentUser].newArmies;
+		for (t in Risk.Territories) {
+			var path = Risk.Territories[t].path;
+			var text = Risk.Territories[t].text;
+			var group = Risk.Territories[t].group;
+//			console.log(text.getText());
+			Risk.mouseFunction(path, t, text, group, 1);
+		}
+	},
+
+	attackPhase: function() {
+		for (t in Risk.Territories) {
+			var group = Risk.Territories[t].group;
+ 			group.off('click');
+            group.off('mouseover');
+            group.off('mouseout');
 		}
 	},
 
 
-	mouseFunction: function(path, t, text, group) {
+//	phase: 0 = initialize(start), 1 = deploy new armies in each turn
+//		   2 = attack, 3 = fortify
+	mouseFunction: function(path, t, text, group, phase) {
 
 		group.on('mouseover', function() {
 			if (Risk.Territories[t].color == null ||
@@ -236,26 +348,40 @@ var Risk = {
 
 		group.on('click', function() {
 //			modified by Shujian Ke
-		if (Risk.Territories[t].color == null || Risk.Users[Risk.currentUser].color == Risk.Territories[t].color) {
-    		if (Risk.Territories[t].armyNum == null) {
-    			Risk.Territories[t].armyNum = 1;
-    			Risk.Territories[t].color = Risk.Users[Risk.currentUser].color;
+			if (Risk.Territories[t].color == null ||
+				Risk.Users[Risk.currentUser].color == Risk.Territories[t].color) {
 
-    			Risk.Users[Risk.currentUser].territoryCount += 1;
-    			Risk.Users[Risk.currentUser].territories[t] = true;
-    		} else {
-    			Risk.Territories[t].armyNum += 1;
-    		}
-    		Risk.Territories[t].path.setFill(
-                Risk.Settings.colors[Risk.Users[Risk.currentUser].color]);
-            Risk.Territories[t].path.setOpacity(0.4);
+        		if (Risk.Territories[t].armyNum == null) {
+        			Risk.Territories[t].armyNum = 1;
+        			Risk.Territories[t].color = Risk.Users[Risk.currentUser].color;
 
-    		text.setText(Risk.Territories[t].armyNum);
-    		group.moveTo(Risk.mapLayer);
-            Risk.topLayer.drawScene();
-           	Risk.currentUser = (Risk.currentUser + 1) % Risk.userNumber;
-           	Risk.stage.draw();
-        }
+        			Risk.Users[Risk.currentUser].territoryCount += 1;
+        			Risk.Users[Risk.currentUser].territories[t] = true;
+        		} else {
+        			Risk.Territories[t].armyNum += 1;
+        		}
+
+        		Risk.Territories[t].path.setFill(
+                    Risk.Settings.colors[Risk.Users[Risk.currentUser].color]);
+
+                Risk.Territories[t].path.setOpacity(0.4);
+
+        		text.setText(Risk.Territories[t].armyNum);
+        		group.moveTo(Risk.mapLayer);
+                Risk.topLayer.drawScene();
+
+               	switch (phase) {
+               		case 0:
+               			Risk.currentUser = (Risk.currentUser + 1) % Risk.userNumber;
+                    case 1:
+                    	Risk.newArmies -= 1;
+                       	if (Risk.newArmies == 0) {
+                        	Risk.currentUser = (Risk.currentUser + 1) % Risk.userNumber;
+                        	Risk.attackPhase();
+                        }
+               	}
+               	Risk.stage.draw();
+            }
 //
 		});
 
