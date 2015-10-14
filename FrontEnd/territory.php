@@ -1,8 +1,11 @@
 <?php
 class territory{
 	private $name;
-	private $troopNum;
+	private $troopNum = 0;
 
+	function __construct($Tname) {
+		$this->name = $Tname;
+    }
 	function getName(){
 		return $this->name;
 	}

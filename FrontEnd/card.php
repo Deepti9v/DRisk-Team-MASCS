@@ -1,8 +1,12 @@
 <?php
-class territory{
+class card{
 	private $id;
 	private $value;
-	private $image
+	private $image;
+	function __construct($Cid, $Cvalue) {
+		$this->id = $Cid;
+		$this->value = $Cvalue;
+    }
 
 	function getId(){
 		return $this->id;
