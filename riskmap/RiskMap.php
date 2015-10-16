@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-	<title>Riskmap.filkor.org</title>
+	<title>MASCS - DRisk</title>
 	<style>
 		html,body {
 		width:  100%;

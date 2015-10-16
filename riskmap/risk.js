@@ -82,9 +82,9 @@ var Risk = {
 			})
 			var text = new Kinetic.Text({
                	text: "",
-                fontSize: 15,
+                fontSize: 20,
                 fontFamily: 'Calibri',
-                fill: 'black'
+                fill: 'red'
     		})
 //   			console.log(text.getText());
     		armyObject.add(text);
@@ -118,7 +118,6 @@ var Risk = {
 				text: text
 			};
 		}
-		
 	},
 
 	setUpUsersObj: function() {
@@ -402,7 +401,7 @@ var Risk = {
                             path.setOpacity(0.2);
                             group.moveTo(Risk.topLayer);
                             Risk.topLayer.drawScene();
-                            Risk.attack();
+                            Risk.fight();
                         }
                     }
                 });
@@ -410,7 +409,7 @@ var Risk = {
         }
 	},
 
-	attack: function(){
+	fight: function(){
         var AttackerDice ;
         var DefenderDice ;
 
@@ -433,34 +432,45 @@ var Risk = {
             Risk.stage.draw();
         }
 
+        Risk.Territories[Risk.attacker].path.setOpacity(0.4);
+
         if (Risk.Territories[Risk.defender].armyNum == 0){
 
+			for(i = 0; i < Risk.userNumber; i++){
+				for (t in Risk.Territories){
+					if( t == Risk.defender && Risk.Users[i].territories[t] == true){
+						defendingUser = i;
+						break;
+					}
+				}
+			}
+
             Risk.Territories[Risk.defender].color = Risk.Territories[Risk.attacker].color;
+            Risk.Users[Risk.currentUser].territories[Risk.defender] = true;
+            Risk.Users[defendingUser].territories[Risk.defender] = false;
             Risk.Territories[Risk.defender].path.setFill(Risk.Settings.colors[Risk.Territories[Risk.attacker].color]);
-            Risk.Territories[Risk.defender].text.setText(Risk.Territories[Risk.defender].armyNum);
-            Risk.Territories[Risk.defender].group.moveTo(Risk.mapLayer);
-            Risk.topLayer.draw();
-            Risk.mapLayer.draw();
 
             Risk.Territories[Risk.defender].armyNum = Risk.Territories[Risk.attacker].armyNum - 1;
             Risk.Territories[Risk.defender].text.setText(Risk.Territories[Risk.defender].armyNum);
-            Risk.Territories[defender].group.moveTo(Risk.mapLayer);
+            Risk.Territories[Risk.defender].group.moveTo(Risk.mapLayer);
+            Risk.mapLayer.draw();
             Risk.topLayer.drawScene();
 
             Risk.Territories[Risk.attacker].armyNum = 1;
             Risk.Territories[Risk.attacker].text.setText(Risk.Territories[Risk.attacker].armyNum);
-            Risk.Territories[attacker].group.moveTo(Risk.mapLayer);
+            Risk.Territories[Risk.attacker].group.moveTo(Risk.mapLayer);
+            Risk.mapLayer.draw();
             Risk.topLayer.drawScene();
 
-            Risk.stage.draw();
+            //Risk.stage.draw();
         }
         else
         {
             Risk.Territories[Risk.attacker].path.setFill(Risk.Settings.colors[Risk.Territories[Risk.attacker].color]);
             Risk.Territories[Risk.defender].path.setFill(Risk.Settings.colors[Risk.Territories[Risk.defender].color]);
             Risk.Territories[Risk.attacker].group.moveTo(Risk.mapLayer);
-            Risk.topLayer.draw();
-            Risk.mapLayer.draw();
+            //Risk.topLayer.draw();
+            //Risk.mapLayer.draw();
             Risk.Territories[Risk.defender].group.moveTo(Risk.mapLayer);
             Risk.topLayer.draw();
             Risk.mapLayer.draw();
