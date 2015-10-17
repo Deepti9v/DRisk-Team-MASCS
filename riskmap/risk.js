@@ -25,18 +25,25 @@ var Risk = {
 	topLayer:  null,
 	backgroundLayer: null,
 
-	userNumber: 3,
+	userNumber: 2,
 	initialTroopNumber: 40,
 	currentUser: 0,
 	newArmies: 0,
+
 	attacker: null,
 	defender: null,
+
 	sourceTerritory: null,
 	destinationTerritory: null,
-	userInfo: null,
+
 	fortifyText: null,
 	deployText: null,
 	attackText: null,
+	finishText: null,
+
+	displayInfo: null,
+	remainArmies: 2,
+	currentPhase: 1,
 
 
 	init: function() {
@@ -171,16 +178,16 @@ var Risk = {
     	});
         Risk.mapLayer.add(startText);
         startText.on('click', function() {
-        	Risk.updateUserInformation(Risk.currentUser);
+        	Risk.updateDisplayInformation();
         	startText.setFontSize(30);
-        	startText.setFill('red');
             Risk.mapLayer.draw();
-            Risk.activatePhaseLink('deploy');
-        	Risk.startPhase();
         	startText.off('click');
         	startText.off('mouseover');
         	startText.off('mouseout');
+//        	Risk.activatePhaseLink('deploy');
+        	Risk.startPhase();
         });
+
         startText.on('mouseover', function() {
         	startText.setFontSize(50);
         	Risk.mapLayer.draw();
@@ -223,18 +230,30 @@ var Risk = {
     	});
         Risk.mapLayer.add(Risk.fortifyText);
 
+//      a button to finish this turn
+		Risk.finishText = new Kinetic.Text({
+			text: "finish",
+			fontSize: 30,
+			x: 400,
+			y: 0,
+			fontFamily: 'Calibri',
+			fill: 'black',
+		});
+		Risk.mapLayer.add(Risk.finishText);
 
-		 Risk.userInfo = new Kinetic.Text({
+//		display information
+		Risk.displayInfo = new Kinetic.Text({
 			text: "Click Start to begin",
 			fontSize: 30,
-			x: 1500,
+			x: 700,
 			y: 25,
 			fontFamily: 'Calibri',
 			fill: 'black',
 			shadowColor: 'red',
-			align: 'right'
+			align: 'left'
 		});
-		Risk.mapLayer.add(Risk.userInfo);
+		Risk.mapLayer.add(Risk.displayInfo);
+
 	},
 
 	activatePhaseLink(phaseText){
@@ -242,12 +261,11 @@ var Risk = {
 			case('deploy'):
 				Risk.deployText.on('click', function() {
 					Risk.deployText.setFontSize(30);
-					Risk.deployText.setFill('red');
 					Risk.mapLayer.draw();
-					Risk.deployPhase();
 					Risk.deployText.off('click');
 					Risk.deployText.off('mouseover');
 					Risk.deployText.off('mouseout');
+					Risk.deployPhase();
 				});
 				Risk.deployText.on('mouseover', function() {
 					Risk.deployText.setFontSize(50);
@@ -262,12 +280,12 @@ var Risk = {
 			case('attack'):
 				Risk.attackText.on('click', function() {
 					Risk.attackText.setFontSize(30);
-					Risk.attackText.setFill('red');
 					Risk.mapLayer.draw();
-					Risk.attackPhase();
 					Risk.attackText.off('click');
 					Risk.attackText.off('mouseover');
 					Risk.attackText.off('mouseout');
+					Risk.attackPhase();
+
 				});
 				Risk.attackText.on('mouseover', function() {
 					Risk.attackText.setFontSize(50);
@@ -282,13 +300,12 @@ var Risk = {
 			case ('fortify'):
 				Risk.fortifyText.on('click', function() {
 					Risk.fortifyText.setFontSize(30);
-					Risk.fortifyText.setFill('red');
 					Risk.mapLayer.draw();
-		        	//Risk.startPhase(0);
-					Risk.fortifyPhase();
 					Risk.fortifyText.off('click');
 					Risk.fortifyText.off('mouseover');
 					Risk.fortifyText.off('mouseout');
+					Risk.fortifyPhase();
+
 				});
 				Risk.fortifyText.on('mouseover', function() {
 					Risk.fortifyText.setFontSize(50);
@@ -299,16 +316,56 @@ var Risk = {
 					Risk.mapLayer.draw();
 				});
 				break;
+
+			case ('finish'):
+				Risk.finishText.on('click', function() {
+					Risk.finishText.setFontSize(30);
+                   	Risk.mapLayer.draw();
+					console.log(Risk.currentUser);
+					Risk.currentUser = (Risk.currentUser + 1) % Risk.userNumber;
+					console.log(Risk.currentUser);
+					Risk.finishText.off('click');
+					Risk.finishText.off('mouseover');
+					Risk.finishText.off('mouseout');
+					Risk.deployPhase();
+
+				});
+				Risk.finishText.on('mouseover', function() {
+					Risk.finishText.setFontSize(50);
+					Risk.mapLayer.draw();
+				});
+				Risk.finishText.on('mouseout', function() {
+					Risk.finishText.setFontSize(30);
+					Risk.mapLayer.draw();
+				});
+				break;
 		}
 	},
 
-	updateUserInformation: function(x){
-		Risk.userInfo.remove();
+	updateDisplayInformation: function(){
 		Risk.mapLayer.draw();
-		x++;
-		y = "User "+x.toString();
-		Risk.userInfo.setText(y);
-		Risk.userInfo.moveTo(Risk.mapLayer);
+		switch(Risk.currentPhase) {
+			case 1:
+				text = "start phase\n" + "User " + Risk.currentUser.toString() + "\nremain armies: "
+					+ Risk.remainArmies.toString();
+				break;
+
+			case 2:
+				text = "deploy phase\n" + "User " + Risk.currentUser.toString() + "\nremain armies: "
+                	+ Risk.newArmies.toString();
+              	break;
+
+            case 3:
+            	text = "attact phase\n" + "User " + Risk.currentUser.toString();
+            	break;
+
+            case 4:
+            	text = "fortify phase\n" + "User " + Risk.currentUser.toString();
+            	break;
+
+		}
+		Risk.displayInfo.setText(text);
+		Risk.displayInfo.moveTo(Risk.mapLayer);
         Risk.mapLayer.drawScene();
 	},
 
@@ -332,6 +389,7 @@ var Risk = {
 	},
 
 	startPhase: function() {
+		Risk.currentPhase = 1;
 		for (t in Risk.Territories) {
 			var path = Risk.Territories[t].path;
 			var text = Risk.Territories[t].text;
@@ -342,23 +400,31 @@ var Risk = {
 	},
 
 	deployPhase: function() {
-		Risk.activatePhaseLink('attack');
+		Risk.currentPhase = 2;
+//		Risk.activatePhaseLink('attack');
 		Risk.newArmies = Risk.Users[Risk.currentUser].newArmies;
+		Risk.updateDisplayInformation();
+
 		for (t in Risk.Territories) {
 			var path = Risk.Territories[t].path;
 			var text = Risk.Territories[t].text;
 			var group = Risk.Territories[t].group;
+			group.off('click');
+            group.off('mouseover');
+            group.off('mouseout');
 //			console.log(text.getText());
 			Risk.mouseFunction(path, t, text, group, 1);
 		}
 	},
 
 	attackPhase: function() {
+		Risk.currentPhase = 3;
 		Risk.activatePhaseLink('fortify');
-		Risk.selectattackingTerritory();
+		Risk.updateDisplayInformation();
+		Risk.selectAttackTerritory();
 	},
 
-	selectattackingTerritory: function(){
+	selectAttackTerritory: function(){
 
 		for (t in Risk.Territories) {
 
@@ -372,81 +438,85 @@ var Risk = {
 
             (function(path, text, group){
                 group.on('mouseover', function() {
+                    if(path.attrs.id != Risk.attacker
+                    	&& Risk.Users[Risk.currentUser].color == Risk.Territories[path.attrs.id].color
+                    	&& Risk.Territories[path.attrs.id].armyNum > 1){
 
-                    if(Risk.Users[Risk.currentUser].color == Risk.Territories[path.attrs.id].color && Risk.Territories[path.attrs.id].armyNum > 1){
                         path.setOpacity(0.3);
                         group.moveTo(Risk.topLayer);
                         Risk.topLayer.drawScene();
                     }
+
+                    if (Risk.attacker != null) {
+                    	var neighbours = Risk.Territories[Risk.attacker].neighbours;
+                        for(var i = 0; i < neighbours.length; i++) {
+                        	if (neighbours[i] == Risk.Territories[path.attrs.id].name
+                        		&& Risk.Territories[neighbours[i]].armyNum > 0
+                        		&& Risk.Territories[neighbours[i]].color != Risk.Territories[Risk.attacker].color) {
+
+                            	path.setOpacity(0.3);
+                                group.moveTo(Risk.topLayer);
+                                Risk.topLayer.drawScene();
+                            }
+                        }
+                    }
+
                 });
 
                 group.on('mouseout', function() {
-                    if(Risk.Users[Risk.currentUser].color == Risk.Territories[path.attrs.id].color && Risk.Territories[path.attrs.id].armyNum > 1){
+                    if (path.attrs.id != Risk.attacker
+                    	&& Risk.Users[Risk.currentUser].color == Risk.Territories[path.attrs.id].color
+                    	&& Risk.Territories[path.attrs.id].armyNum > 1){
+
                         path.setFill(Risk.Settings.colors[Risk.Territories[path.attrs.id].color]);
                         group.moveTo(Risk.mapLayer);
                         Risk.topLayer.draw();
                         Risk.mapLayer.draw();
                     }
+
+                    if (Risk.attacker != null) {
+                    	var neighbours = Risk.Territories[Risk.attacker].neighbours;
+                        for(var i = 0; i < neighbours.length; i++) {
+                        	if (neighbours[i] == Risk.Territories[path.attrs.id].name
+                        		&& Risk.Territories[neighbours[i]].armyNum > 0
+                        		&& Risk.Territories[neighbours[i]].color != Risk.Territories[Risk.attacker].color) {
+
+								path.setFill(Risk.Settings.colors[Risk.Territories[path.attrs.id].color]);
+                            	group.moveTo(Risk.mapLayer);
+                            	Risk.topLayer.draw();
+                            	Risk.mapLayer.draw();
+                            }
+                        }
+                    }
                 });
 
                 group.on('click', function() {
-                    if(Risk.Users[Risk.currentUser].color == Risk.Territories[path.attrs.id].color && Risk.Territories[path.attrs.id].armyNum > 1){
+                    if (path.attrs.id != Risk.attacker
+                    	&& Risk.Users[Risk.currentUser].color == Risk.Territories[path.attrs.id].color
+                    	&& Risk.Territories[path.attrs.id].armyNum > 1){
+						if (Risk.attacker != null) {
+							Risk.Territories[Risk.attacker].path.setOpacity(0.4);
+						}
                         Risk.attacker = path.attrs.id;
                         Risk.Territories[path.attrs.id].path.setOpacity(0.8);
                         group.moveTo(Risk.topLayer);
                         Risk.topLayer.drawScene();
-                        Risk.selectdefendingTerritory();
+//                        Risk.selectDefendingTerritory();
                     }
-                });
-            })(path, text, group);
-        }
-	},
 
-	selectdefendingTerritory: function(){
-		for (t in Risk.Territories) {
-            //document.write("i'm here");
-            var path = Risk.Territories[t].path;
-            var text = Risk.Territories[t].text;
-            var group = Risk.Territories[t].group;
-
-            group.off('click');
-            group.off('mouseover');
-            group.off('mouseout');
-
-            (function(path, text, group){
-                group.on('mouseover', function() {
-                    var neighbours = Risk.Territories[Risk.attacker].neighbours;
-                    for(var i = 0; i < neighbours.length; i++) {
-                        if (neighbours[i] == Risk.Territories[path.attrs.id].name && Risk.Territories[neighbours[i]].color != Risk.Territories[Risk.attacker].color) {
-                            path.setOpacity(0.3);
-                            group.moveTo(Risk.topLayer);
-                            Risk.topLayer.drawScene();
+                    if (Risk.attacker != null) {
+                   		var neighbours = Risk.Territories[Risk.attacker].neighbours;
+                    	for(var i = 0; i < neighbours.length; i++) {
+                        	if (neighbours[i] == Risk.Territories[path.attrs.id].name
+                        		&& Risk.Territories[neighbours[i]].armyNum > 0
+                        		&& Risk.Territories[neighbours[i]].color != Risk.Territories[Risk.attacker].color) {
+                            	Risk.defender = path.attrs.id;
+//                           		path.setOpacity(0.8);
+                            	group.moveTo(Risk.topLayer);
+                            	Risk.topLayer.drawScene();
+                            	Risk.fight();
                         }
                     }
-                });
-
-                group.on('mouseout', function() {
-                    var neighbours = Risk.Territories[Risk.attacker].neighbours;
-                    for(var i = 0; i < neighbours.length; i++) {
-                        if (neighbours[i] == Risk.Territories[path.attrs.id].name && Risk.Territories[neighbours[i]].color != Risk.Territories[Risk.attacker].color) {
-                            path.setFill(Risk.Settings.colors[Risk.Territories[path.attrs.id].color]);
-                            group.moveTo(Risk.mapLayer);
-                            Risk.topLayer.draw();
-                            Risk.mapLayer.draw();
-                        }
-                    }
-                });
-
-                group.on('click', function() {
-                    var neighbours = Risk.Territories[Risk.attacker].neighbours;
-                    for(var i = 0; i < neighbours.length; i++) {
-                        if (neighbours[i] == Risk.Territories[path.attrs.id].name && Risk.Territories[neighbours[i]].color != Risk.Territories[Risk.attacker].color) {
-                            Risk.defender = path.attrs.id;
-                            path.setOpacity(0.2);
-                            group.moveTo(Risk.topLayer);
-                            Risk.topLayer.drawScene();
-                            Risk.fight();
-                        }
                     }
                 });
             })(path, text, group);
@@ -522,10 +592,13 @@ var Risk = {
 	    Risk.attacker = null;
 	    Risk.defender = null;
 
-	    Risk.attackPhase();
+	    Risk.selectAttackTerritory();
 	},
 
 	fortifyPhase: function(){
+		Risk.currentPhase = 4;
+		Risk.updateDisplayInformation();
+		Risk.activatePhaseLink('finish');
 		Risk.selectSourceTerritory();
 	},
 
@@ -541,7 +614,9 @@ var Risk = {
 
 			(function(path, text, group){
 				group.on('mouseover', function() {
-					if(Risk.Users[Risk.currentUser].color == Risk.Territories[path.attrs.id].color && Risk.Territories[path.attrs.id].armyNum > 1){
+					if (Risk.Users[Risk.currentUser].color == Risk.Territories[path.attrs.id].color
+						&& Risk.Territories[path.attrs.id].armyNum > 1){
+
 						path.setOpacity(0.3);
 						group.moveTo(Risk.topLayer);
 						Risk.topLayer.drawScene();
@@ -549,7 +624,9 @@ var Risk = {
 				});
 
 				group.on('mouseout', function() {
-					if(Risk.Users[Risk.currentUser].color == Risk.Territories[path.attrs.id].color && Risk.Territories[path.attrs.id].armyNum > 1){
+					if(Risk.Users[Risk.currentUser].color == Risk.Territories[path.attrs.id].color
+						&& Risk.Territories[path.attrs.id].armyNum > 1){
+
 						path.setFill(Risk.Settings.colors[Risk.Territories[path.attrs.id].color]);
 						group.moveTo(Risk.mapLayer);
 						Risk.topLayer.draw();
@@ -558,7 +635,9 @@ var Risk = {
 				});
 
 				group.on('click', function() {
-					if(Risk.Users[Risk.currentUser].color == Risk.Territories[path.attrs.id].color && Risk.Territories[path.attrs.id].armyNum > 1){
+					if(Risk.Users[Risk.currentUser].color == Risk.Territories[path.attrs.id].color
+						&& Risk.Territories[path.attrs.id].armyNum > 1){
+
 						Risk.sourceTerritory = path.attrs.id;
 						Risk.Territories[path.attrs.id].path.setOpacity(0.8);
 						group.moveTo(Risk.topLayer);
@@ -583,7 +662,9 @@ var Risk = {
 
 			(function(path, text, group){
 				group.on('mouseover', function() {
-					if (Risk.Users[Risk.currentUser].color == Risk.Territories[path.attrs.id].color) {
+					if (Risk.sourceTerritory != path.attrs.id
+						&& Risk.Users[Risk.currentUser].color == Risk.Territories[path.attrs.id].color) {
+
 						path.setOpacity(0.3);
 						group.moveTo(Risk.topLayer);
 						Risk.topLayer.drawScene();
@@ -591,8 +672,10 @@ var Risk = {
 				});
 
 				group.on('mouseout', function() {
-					if (Risk.Users[Risk.currentUser].color == Risk.Territories[path.attrs.id].color) {
+					if (Risk.sourceTerritory != path.attrs.id
+						&& Risk.Users[Risk.currentUser].color == Risk.Territories[path.attrs.id].color) {
 						path.setFill(Risk.Settings.colors[Risk.Territories[path.attrs.id].color]);
+
 						group.moveTo(Risk.mapLayer);
 						Risk.topLayer.draw();
 						Risk.mapLayer.draw();
@@ -600,12 +683,15 @@ var Risk = {
 				});
 
 				group.on('click', function() {
-					if (Risk.Users[Risk.currentUser].color == Risk.Territories[path.attrs.id].color) {
+					if (Risk.sourceTerritory != path.attrs.id
+						&& Risk.Users[Risk.currentUser].color == Risk.Territories[path.attrs.id].color) {
+
 						Risk.destinationTerritory = path.attrs.id;
-						path.setOpacity(0.2);
+						path.setOpacity(0.3);
 						group.moveTo(Risk.topLayer);
 						Risk.topLayer.drawScene();
 						Risk.moveTroops();
+						Risk.selectSourceTerritory();
 					}
 				});
 			})(path, text, group);
@@ -615,33 +701,26 @@ var Risk = {
 	moveTroops: function(){
 
 		Risk.Territories[Risk.sourceTerritory].armyNum -= 1;
-		Risk.Territories[Risk.sourceTerritory].text.setText(Risk.Territories[Risk.sourceTerritory].armyNum);
+		Risk.Territories[Risk.sourceTerritory].text.setText(
+			Risk.Territories[Risk.sourceTerritory].armyNum);
 		Risk.Territories[Risk.sourceTerritory].group.moveTo(Risk.mapLayer);
 		Risk.topLayer.drawScene();
 		Risk.stage.draw();
 
 		Risk.Territories[Risk.destinationTerritory].armyNum += 1;
-		Risk.Territories[Risk.destinationTerritory].text.setText(Risk.Territories[Risk.destinationTerritory].armyNum);
+		Risk.Territories[Risk.destinationTerritory].text.setText(
+			Risk.Territories[Risk.destinationTerritory].armyNum);
 		Risk.Territories[Risk.destinationTerritory].group.moveTo(Risk.mapLayer);
 		Risk.topLayer.drawScene();
 		Risk.stage.draw();
 
 		Risk.Territories[Risk.sourceTerritory].path.setOpacity(0.4);
+		Risk.topLayer.drawScene();
+        Risk.stage.draw();
 
 		Risk.sourceTerritory = null;
 		Risk.destinationTerritory = null;
 
-		Risk.currentUser = (Risk.currentUser + 1) % Risk.userNumber;
-		//Risk.updateUserInformation(currentUser);
-
-		if(Risk.currentUser == 0){
-			Risk.activatePhaseLink('deploy')
-			//Risk.deployPhase(); // Satyam: can be replaced with activating deploy text and showing current user info on screen
-		}
-		else{
-			Risk.activatePhaseLink('attack')
-			//Risk.attackPhase(); // Satyam: can be replaced with activating attack text and showing current user info on screen
-		}
 	},
 
 //	phase: 0 = initialize(start), 1 = deploy new armies in each turn
@@ -697,12 +776,22 @@ var Risk = {
                	switch (phase) {
                		case 0:
                			Risk.currentUser = (Risk.currentUser + 1) % Risk.userNumber;
+               			if(Risk.currentUser == 0) {
+               				Risk.remainArmies -= 1;
+               			}
+               			Risk.updateDisplayInformation();
+               			if(Risk.remainArmies == 0) {
+               				Risk.deployPhase();
+               			}
+               			break;
+
                     case 1:
                     	Risk.newArmies -= 1;
+                    	Risk.updateDisplayInformation();
                        	if (Risk.newArmies == 0) {
-                        	Risk.currentUser = (Risk.currentUser + 1) % Risk.userNumber;
-                        	//Risk.attackPhase();
+                        	Risk.attackPhase();
                         }
+                        break;
                	}
                	Risk.stage.draw();
             }
@@ -766,16 +855,4 @@ var Risk = {
 		}
 	},
 
-
-	deploymentPhase: function() {
-
-	},
-
-	attackingPhase: function() {
-
-	},
-
-	fortifyingPhase: function() {
-
-	},
 }
