@@ -25,7 +25,7 @@ var Risk = {
 	topLayer:  null,
 	backgroundLayer: null,
 
-	userNumber: 3,
+	userNumber: 2,
 	initialTroopNumber: 40,
 	currentUser: 0,
 	newArmies: 0,
@@ -37,6 +37,8 @@ var Risk = {
 	fortifyText: null,
 	deployText: null,
 	attackText: null,
+	remainArmies: 5,
+	currentPhase: -1,
 
 
 	init: function() {
@@ -171,7 +173,7 @@ var Risk = {
     	});
         Risk.mapLayer.add(startText);
         startText.on('click', function() {
-        	Risk.updateUserInformation(Risk.currentUser);
+        	Risk.updateDisplayInformation();
         	startText.setFontSize(30);
         	startText.setFill('red');
             Risk.mapLayer.draw();
@@ -227,7 +229,7 @@ var Risk = {
 		 Risk.userInfo = new Kinetic.Text({
 			text: "Click Start to begin",
 			fontSize: 30,
-			x: 1500,
+			x: 700,
 			y: 25,
 			fontFamily: 'Calibri',
 			fill: 'black',
@@ -302,12 +304,18 @@ var Risk = {
 		}
 	},
 
-	updateUserInformation: function(x){
-		Risk.userInfo.remove();
+	updateDisplayInformation: function(){
+//		Risk.userInfo.remove();
 		Risk.mapLayer.draw();
-		x++;
-		y = "User "+x.toString();
-		Risk.userInfo.setText(y);
+//		x++;
+//		y = "User "+x.toString();
+		if(Risk.remainArmies > 0) {
+			text = "User " + Risk.currentUser.toString() + ", remain armies: "
+				+ Risk.remainArmies.toString();
+		} else {
+			text = "User " + Risk.currentUser.toString();
+		}
+		Risk.userInfo.setText(text);
 		Risk.userInfo.moveTo(Risk.mapLayer);
         Risk.mapLayer.drawScene();
 	},
@@ -697,6 +705,13 @@ var Risk = {
                	switch (phase) {
                		case 0:
                			Risk.currentUser = (Risk.currentUser + 1) % Risk.userNumber;
+               			if(Risk.currentUser == 0) {
+               				Risk.remainArmies -= 1;
+               			}
+               			Risk.updateDisplayInformation(Risk.currentUser, Risk.remainArmies);
+               			if(Risk.remainArmies == 0) {
+               				group.off('click');
+               			}
                     case 1:
                     	Risk.newArmies -= 1;
                        	if (Risk.newArmies == 0) {
