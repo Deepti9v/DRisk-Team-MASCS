@@ -54,7 +54,7 @@ var TerritoryNames = {
  * @type {Object}
  */
 var Neighbours = {
-	Alaska: ['North West Territory','Alberta', 'Kamchatka'],
+	Alaska: ['NorthWestTerritory','Alberta', 'Kamchatka'],
 	NorthWestTerritory: ['Alberta','Alaska','Greenland'],
 	Alberta: ['NorthWestTerritory','Alaska','Ontario','WesternUnitedStates'],
 	Ontario: ['NorthWestTerritory','Alberta','WesternUnitedStates','EasternUnitedStates','Quebec','Greenland'],
