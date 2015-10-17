@@ -169,17 +169,21 @@ var Risk = {
 
 //		a button to start game
 		var startText = new Kinetic.Text({
-        	text: "start",
-        	x: 0,
-        	y: 0,
-            fontSize: 30,
+        	text: "Start",
+        	x: 5,
+        	y: 5,
+            fontSize: 40,
             fontFamily: 'Calibri',
-            fill: 'black'
+            fill: 'red',
+            shadowColor: 'yellow'
     	});
         Risk.mapLayer.add(startText);
         startText.on('click', function() {
         	Risk.updateDisplayInformation();
         	startText.setFontSize(30);
+            Risk.mapLayer.draw();
+            startText.setFill('black');
+            //startText.shadowEnabled(false);
             Risk.mapLayer.draw();
         	startText.off('click');
         	startText.off('mouseover');
@@ -194,10 +198,12 @@ var Risk = {
         });
         startText.on('mouseout', function() {
             startText.setFontSize(30);
+
             Risk.mapLayer.draw();
         });
 
 //		a button to deploy
+/*
 		Risk.deployText = new Kinetic.Text({
         	text: "deploy",
       		x: 100,
@@ -207,6 +213,7 @@ var Risk = {
             fill: 'black'
     	});
         Risk.mapLayer.add(Risk.deployText);
+
 
 //		a button to attack
 		Risk.attackText = new Kinetic.Text({
@@ -218,13 +225,13 @@ var Risk = {
             fill: 'black'
     	});
         Risk.mapLayer.add(Risk.attackText);
-
+*/
 //		a button to fortify
 		Risk.fortifyText = new Kinetic.Text({
-        	text: "fortify",
+        	text: "Fortify",
             fontSize: 30,
-            x: 300,
-            y: 0,
+            x: 150,
+            y: 5,
             fontFamily: 'Calibri',
             fill: 'black'
     	});
@@ -232,10 +239,10 @@ var Risk = {
 
 //      a button to finish this turn
 		Risk.finishText = new Kinetic.Text({
-			text: "finish",
+			text: "Finish",
 			fontSize: 30,
-			x: 400,
-			y: 0,
+			x: 300,
+			y: 5,
 			fontFamily: 'Calibri',
 			fill: 'black',
 		});
@@ -245,8 +252,8 @@ var Risk = {
 		Risk.displayInfo = new Kinetic.Text({
 			text: "Click Start to begin",
 			fontSize: 30,
-			x: 700,
-			y: 25,
+			x: 670,
+			y: 5,
 			fontFamily: 'Calibri',
 			fill: 'black',
 			shadowColor: 'red',
@@ -300,6 +307,7 @@ var Risk = {
 			case ('fortify'):
 				Risk.fortifyText.on('click', function() {
 					Risk.fortifyText.setFontSize(30);
+					Risk.fortifyText.setFill('black');
 					Risk.mapLayer.draw();
 					Risk.fortifyText.off('click');
 					Risk.fortifyText.off('mouseover');
@@ -320,6 +328,7 @@ var Risk = {
 			case ('finish'):
 				Risk.finishText.on('click', function() {
 					Risk.finishText.setFontSize(30);
+					Risk.finishText.setFill('black');
                    	Risk.mapLayer.draw();
 					console.log(Risk.currentUser);
 					Risk.currentUser = (Risk.currentUser + 1) % Risk.userNumber;
@@ -344,25 +353,25 @@ var Risk = {
 
 	updateDisplayInformation: function(){
 		Risk.mapLayer.draw();
+		x = Risk.currentUser + 1;
 		switch(Risk.currentPhase) {
 			case 1:
-				text = "start phase\n" + "User " + Risk.currentUser.toString() + "\nremain armies: "
-					+ Risk.remainArmies.toString();
+				text = "User " + x.toString() + ", Claim a Territory!\nYou have "
+					+ Risk.remainArmies.toString() + " units left";
 				break;
 
 			case 2:
-				text = "deploy phase\n" + "User " + Risk.currentUser.toString() + "\nremain armies: "
-                	+ Risk.newArmies.toString();
+				text = "User " + x.toString() + ", Deploy your armies!\nYou have "
+                	+ Risk.newArmies.toString() + " units remaining";
               	break;
 
             case 3:
-            	text = "attact phase\n" + "User " + Risk.currentUser.toString();
+            	text = "User " + x.toString() +", Attack neighbouring territories!\nOnce done, click Fortify";
             	break;
 
             case 4:
-            	text = "fortify phase\n" + "User " + Risk.currentUser.toString();
+            	text = "User " + x.toString() + ", Fortify your territories!\nOnce done, click Finish";
             	break;
-
 		}
 		Risk.displayInfo.setText(text);
 		Risk.displayInfo.moveTo(Risk.mapLayer);
@@ -419,6 +428,8 @@ var Risk = {
 
 	attackPhase: function() {
 		Risk.currentPhase = 3;
+		Risk.fortifyText.setFill('red');
+		Risk.mapLayer.draw();
 		Risk.activatePhaseLink('fortify');
 		Risk.updateDisplayInformation();
 		Risk.selectAttackTerritory();
@@ -598,6 +609,8 @@ var Risk = {
 	fortifyPhase: function(){
 		Risk.currentPhase = 4;
 		Risk.updateDisplayInformation();
+		Risk.finishText.setFill('red');
+        Risk.mapLayer.draw();
 		Risk.activatePhaseLink('finish');
 		Risk.selectSourceTerritory();
 	},
