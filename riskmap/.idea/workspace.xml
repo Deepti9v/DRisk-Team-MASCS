@@ -24,19 +24,17 @@
       <file leaf-file-name="risk.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/risk.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.42671853">
-              <caret line="178" column="11" selection-start-line="178" selection-start-column="11" selection-end-line="178" selection-end-column="11" />
+            <state vertical-scroll-proportion="5.9548874">
+              <caret line="594" column="34" selection-start-line="594" selection-start-column="34" selection-end-line="594" selection-end-column="34" />
               <folding>
-                <element signature="e#0#24368#0" expanded="false" />
-                <element signature="e#0#24368#0" expanded="false" />
-                <element signature="e#0#24368#0" expanded="false" />
-                <element signature="e#0#24368#0" expanded="false" />
-                <element signature="e#0#24368#0" expanded="false" />
-                <element signature="e#0#24368#0" expanded="false" />
-                <element signature="e#0#24368#0" expanded="false" />
-                <element signature="e#0#24368#0" expanded="false" />
-                <element signature="e#0#24368#0" expanded="false" />
-                <element signature="e#0#24368#0" expanded="false" />
+                <element signature="e#0#25713#0" expanded="false" />
+                <element signature="e#0#25713#0" expanded="false" />
+                <element signature="e#0#25713#0" expanded="false" />
+                <element signature="e#0#25713#0" expanded="false" />
+                <element signature="e#0#25713#0" expanded="false" />
+                <element signature="e#0#25713#0" expanded="false" />
+                <element signature="e#0#25713#0" expanded="false" />
+                <element signature="e#0#25713#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -124,6 +122,9 @@
     <property name="FullScreen" value="true" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.appearance" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
   </component>
   <component name="RunManager">
     <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
@@ -336,16 +337,14 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="634" column="10" selection-start-line="634" selection-start-column="10" selection-end-line="634" selection-end-column="10" />
           <folding>
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -363,16 +362,14 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -382,16 +379,14 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="134" column="26" selection-start-line="134" selection-start-column="26" selection-end-line="134" selection-end-column="26" />
           <folding>
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -455,22 +450,94 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/risk.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.42671853">
-          <caret line="178" column="11" selection-start-line="178" selection-start-column="11" selection-end-line="178" selection-end-column="11" />
+        <state vertical-scroll-proportion="5.9548874">
+          <caret line="594" column="34" selection-start-line="594" selection-start-column="34" selection-end-line="594" selection-end-column="34" />
           <folding>
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
-            <element signature="e#0#24368#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
+            <element signature="e#0#25713#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>No facets are configured</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>riskmap</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.6" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>
