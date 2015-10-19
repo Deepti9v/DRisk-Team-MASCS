@@ -41,6 +41,8 @@ var Risk = {
 	attackText: null,
 	finishText: null,
 
+	attackerDice: null,
+
 	displayInfo: null,
 	remainArmies: 2,
 	currentPhase: 1,
@@ -600,7 +602,21 @@ var Risk = {
             Risk.topLayer.draw();
             Risk.mapLayer.draw();
         }
-	    Risk.attacker = null;
+		var diceText = new Kinetic.Text({
+        	text: "",
+        	x: 670,
+        	y: 80,
+            fontSize: 20,
+            fontFamily: 'Calibri',
+            fill: 'black',
+            shadowColor: 'red',
+    	});
+    	text = "dice number \n" + "attacker: " + AttackerDice.toString() + "\ndefender: " + DefenderDice.toString();
+    	diceText.setText(text);
+    	Risk.mapLayer.add(diceText);
+    	Risk.mapLayer.draw();
+		diceText.setText('');
+   	    Risk.attacker = null;
 	    Risk.defender = null;
 
 	    Risk.selectAttackTerritory();
