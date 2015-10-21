@@ -41,8 +41,6 @@ var Risk = {
 	attackText: null,
 	finishText: null,
 
-	attackerDice: null,
-
 	displayInfo: null,
 	remainArmies: 2,
 	currentPhase: 1,
@@ -84,7 +82,7 @@ var Risk = {
 	 */
 	setUpTerritoriesObj: function() {
 		for(id in TerritoryNames) {
-
+			
 			var pathObject = new Kinetic.Path({
 				data: TerritoryPathData[id].path,
 				id: id //set a unique id --> path.attrs.id
@@ -168,6 +166,102 @@ var Risk = {
 	},
 
 	phaseButton: function() {
+		
+		var group = new Kinetic.Group({
+		});
+	
+		var playerOne = new Kinetic.Rect({
+        	width: 150,
+        	height: 50,
+			x:1600,
+			y:5,	
+        	strokeWidth: 5
+    	});
+		var playerOneText = new Kinetic.Text({
+        	text: "Player 1",
+        	x: 1610,
+        	y: 5,
+            fontSize: 40,
+            fontFamily: 'Calibri',
+            fill: 'Black',
+            shadowColor: 'Grey'
+		});
+		
+		group.add(playerOne);
+		group.add(playerOneText);
+		Risk.mapLayer.add(group);
+		group.on('click', function() {
+			$.post('test.php', { num: 1 }, function(result) { 
+			   alert(result); 
+			});
+			group.off('click');
+        	group.off('mouseover');
+        	group.off('mouseout');
+        });
+        group.on('mouseover', function() {
+        	group.setOpacity(0.3);
+			group.setFill('Red');
+            group.moveTo(Risk.topLayer);
+            Risk.topLayer.drawScene();
+        });
+        playerOne.on('mouseout', function() {
+            playerOne.setOpacity(0.2);
+			playerOne.setFill('grey');
+            playerOne.moveTo(Risk.mapLayer);
+            Risk.topLayer.draw();
+            Risk.mapLayer.draw();
+        });
+		
+
+		var group2 = new Kinetic.Group({
+		});
+	
+		var playerTwo = new Kinetic.Rect({
+        	width: 150,
+        	height: 50,
+			x:1600,
+			y:100,	
+        	strokeWidth: 5
+    	});
+		var playerTwoText = new Kinetic.Text({
+        	text: "Player 2",
+        	x: 1610,
+        	y: 100,
+            fontSize: 40,
+            fontFamily: 'Calibri',
+            fill: 'Black',
+            shadowColor: 'Grey'
+		});
+		
+		group2.add(playerTwo);
+		group2.add(playerTwoText);
+		Risk.mapLayer.add(group2);
+		group2.on('click', function() {
+			$.post('test.php', { num: 2 }, function(result) { 
+			   	Risk.displayUIdata.setText(result);
+				Risk.displayUIdata.moveTo(Risk.mapLayer);
+				Risk.mapLayer.drawScene();	
+			});
+			group2.off('click');
+        	group2.off('mouseover');
+        	group2.off('mouseout');
+        });
+        group2.on('mouseover', function() {
+        	group2.setOpacity(0.3);
+			group2.setFill('Red');
+            group2.moveTo(Risk.topLayer);
+            Risk.topLayer.drawScene();
+        });
+        playerTwo.on('mouseout', function() {
+            playerTwo.setOpacity(0.2);
+			playerTwo.setFill('grey');
+            playerTwo.moveTo(Risk.mapLayer);
+            Risk.topLayer.draw();
+            Risk.mapLayer.draw();
+        });
+		
+		
+	
 
 //		a button to start game
 		var startText = new Kinetic.Text({
@@ -262,6 +356,18 @@ var Risk = {
 			align: 'left'
 		});
 		Risk.mapLayer.add(Risk.displayInfo);
+			
+		Risk.displayUIdata = new Kinetic.Text({
+			text: "",
+			fontSize: 30,
+			x: 1500,
+			y: 500,
+			fontFamily: 'Calibri',
+			fill: 'black',
+			shaowColor: 'red',
+			align: 'left'
+		});
+		Risk.mapLayer.add(Risk.displayUIdata);
 
 	},
 
@@ -602,21 +708,7 @@ var Risk = {
             Risk.topLayer.draw();
             Risk.mapLayer.draw();
         }
-		var diceText = new Kinetic.Text({
-        	text: "",
-        	x: 670,
-        	y: 80,
-            fontSize: 20,
-            fontFamily: 'Calibri',
-            fill: 'black',
-            shadowColor: 'red',
-    	});
-    	text = "dice number \n" + "attacker: " + AttackerDice.toString() + "\ndefender: " + DefenderDice.toString();
-    	diceText.setText(text);
-    	Risk.mapLayer.add(diceText);
-    	Risk.mapLayer.draw();
-		diceText.setText('');
-   	    Risk.attacker = null;
+	    Risk.attacker = null;
 	    Risk.defender = null;
 
 	    Risk.selectAttackTerritory();
