@@ -1,10 +1,11 @@
-h1.title{
+h1.title {
 	text-align: center;
 	font-size: 400%;
 	font-style: oblique;
 	font-family: Arial,Verdana,Sans-serif;
 }
-p.players,p.complexity{
+
+p.players,p.complexity {
 	clear: both;
 	float: left;
 	text-align: left;
@@ -14,7 +15,7 @@ p.players,p.complexity{
 	font-family:"Times New Roman",Georgia,Serif;
 }
 
-select.players,select.complexity{
+select.players,select.complexity {
 	clear: both;
 	float: right;
 	margin-top: -49px;
@@ -25,7 +26,7 @@ select.players,select.complexity{
 	font-family:"Times New Roman",Georgia,Serif;
 }
 
-input.startGameButton{
+input.startGameButton {
 	clear: both;
 	margin-top: 130px;
 	float: left;
@@ -35,7 +36,8 @@ input.startGameButton{
 	font-style: italic;
 	font-family:"Times New Roman",Georgia,Serif;
 }
-input.cancelButton{
+
+input.cancelButton {
 	clear: both;
 	float: right;
 	margin-top: -62px;

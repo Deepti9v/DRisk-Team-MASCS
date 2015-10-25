@@ -1,16 +1,16 @@
-h1.title{
+h1.title {
 	text-align: center;
 	font-size: 400%;
 	font-style: oblique;
 	font-family: Arial,Verdana,Sans-serif;
 }
 
-div.table{
+div.table {
 	text-align: center;
 	font-size: 175%;
 	font-style: italic;
 	font-family: "Times New Roman",Georgia,Serif;
 }
 
-.tab{ border:#f00;}
-.tab td{ border:solid 1px #f00}
+.tab { border:#f00;}
+.tab td { border:solid 1px #f00}

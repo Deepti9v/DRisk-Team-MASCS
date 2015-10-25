@@ -1,12 +1,12 @@
-div.word{
+div.word {
 	margin:  150px;
 	text-align: center;
 	font-size: 650%;
 	font-style: oblique;
 	font-family: Arial,Verdana,Sans-serif;
-
 }
-input.JoinGameButton{
+
+input.JoinGameButton {
 	float: left;
 	text-align: left;
 	margin-left: 100px;
@@ -14,7 +14,8 @@ input.JoinGameButton{
 	font-style: italic;
 	font-family:"Times New Roman",Georgia,Serif;
 }
-input.NewGameButton{
+
+input.NewGameButton {
 	float: right;
 	text-align: right;
 	margin-right: 100px;
