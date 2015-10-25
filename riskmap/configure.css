@@ -1,0 +1,47 @@
+h1.title{
+	text-align: center;
+	font-size: 400%;
+	font-style: oblique;
+	font-family: Arial,Verdana,Sans-serif;
+}
+p.players,p.complexity{
+	clear: both;
+	float: left;
+	text-align: left;
+	margin-left: 300px;
+	font-size: 180%;
+	font-style: italic;
+	font-family:"Times New Roman",Georgia,Serif;
+}
+
+select.players,select.complexity{
+	clear: both;
+	float: right;
+	margin-top: -49px;
+	text-align: right;
+	margin-right: 300px;
+	font-size: 150%;
+	font-style: italic;
+	font-family:"Times New Roman",Georgia,Serif;
+}
+
+input.startGameButton{
+	clear: both;
+	margin-top: 130px;
+	float: left;
+	text-align: left;
+	margin-left: 300px;
+	font-size: 300%;
+	font-style: italic;
+	font-family:"Times New Roman",Georgia,Serif;
+}
+input.cancelButton{
+	clear: both;
+	float: right;
+	margin-top: -62px;
+	text-align: right;
+	margin-right: 300px;
+	font-size: 300%;
+	font-style: italic;
+	font-family:"Times New Roman",Georgia,Serif;
+}
