@@ -540,17 +540,26 @@ var Risk = {
         var AttackerDice ;
         var DefenderDice ;
 
+		showmodal();
         while(Risk.Territories[Risk.attacker].armyNum != 1 && Risk.Territories[Risk.defender].armyNum != 0){
             AttackerDice = 1 + Math.floor(Math.random()*6);
             DefenderDice = 1 + Math.floor(Math.random()*6);
+            text = "Attacker and Defender rolls dice<br>Attacker gets: " + AttackerDice.toString() + "<br>Defender gets: " + DefenderDice.toString();
+            document.getElementById('result').innerHTML = text;
 
             if (AttackerDice > DefenderDice){
+            	text = "Attacker and Defender rolls dice<br>Attacker gets: " + AttackerDice.toString()
+            	+ "<br>Defender gets: " + DefenderDice.toString() + "<br>Defender loses an army";
+                document.getElementById('result').innerHTML = text;
                 Risk.Territories[Risk.defender].armyNum -= 1;
                 Risk.Territories[Risk.defender].text.setText(Risk.Territories[Risk.defender].armyNum);
                 Risk.Territories[Risk.defender].group.moveTo(Risk.mapLayer);
                 Risk.topLayer.drawScene();
             }
             else{
+            	text = "Attacker and Defender rolls dice<br>Attacker gets: " + AttackerDice.toString()
+				+ "<br>Defender gets: " + DefenderDice.toString() + "<br>Attacker loses an army";
+				document.getElementById('result').innerHTML = text;
                 Risk.Territories[Risk.attacker].armyNum -= 1;
                 Risk.Territories[Risk.attacker].text.setText(Risk.Territories[Risk.attacker].armyNum);
                 Risk.Territories[Risk.attacker].group.moveTo(Risk.mapLayer);
@@ -588,7 +597,9 @@ var Risk = {
             Risk.Territories[Risk.attacker].group.moveTo(Risk.mapLayer);
             Risk.mapLayer.draw();
             Risk.topLayer.drawScene();
-
+            text = "Attacker and Defender rolls dice<br>Attacker gets: " + AttackerDice.toString()
+			+ "<br>Defender gets: " + DefenderDice.toString() + "<br>Attacker wins! Defender loses the territory";
+			document.getElementById('result').innerHTML = text;
             //Risk.stage.draw();
         }
         else
@@ -601,6 +612,9 @@ var Risk = {
             Risk.Territories[Risk.defender].group.moveTo(Risk.mapLayer);
             Risk.topLayer.draw();
             Risk.mapLayer.draw();
+            text = "Attacker and Defender rolls dice<br>Attacker gets: " + AttackerDice.toString()
+			+ "<br>Defender gets: " + DefenderDice.toString() + "<br>Defender wins! Attacker retreats back";
+			document.getElementById('result').innerHTML = text;
         }
 
 		/*
@@ -614,9 +628,13 @@ var Risk = {
             shadowColor: 'red',
     	});*/
     	//text = "dice number \n" + "attacker: " + AttackerDice.toString() + "\ndefender: " + DefenderDice.toString();
-    	text = "Attacker and Defender rolls dice<br>" + "Attacker gets: " + AttackerDice.toString() + "<br>Defender gets: " + DefenderDice.toString();
+    	//text1 = "Attacker and Defender rolls dice<br>";
+    	//document.getElementById("dicemodal").innerHTML = text1;
+    	/*
+    	text = "Attacker and Defender rolls dice<br>Attacker gets: " + AttackerDice.toString() + "<br>Defender gets: " + DefenderDice.toString();
 		document.getElementById('result').innerHTML = text;
 		showmodal();
+		*/
     	// diceText.setText(text);
     	//Risk.mapLayer.add(diceText);
     	//Risk.mapLayer.draw();
