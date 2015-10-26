@@ -25,7 +25,7 @@ var Risk = {
 	topLayer:  null,
 	backgroundLayer: null,
 
-	userNumber: 2,
+	userNumber: 4,
 	initialTroopNumber: 40,
 	currentUser: 0,
 	newArmies: 0,
@@ -602,6 +602,8 @@ var Risk = {
             Risk.topLayer.draw();
             Risk.mapLayer.draw();
         }
+
+		/*
 		var diceText = new Kinetic.Text({
         	text: "",
         	x: 670,
@@ -610,12 +612,16 @@ var Risk = {
             fontFamily: 'Calibri',
             fill: 'black',
             shadowColor: 'red',
-    	});
-    	text = "dice number \n" + "attacker: " + AttackerDice.toString() + "\ndefender: " + DefenderDice.toString();
-    	diceText.setText(text);
-    	Risk.mapLayer.add(diceText);
-    	Risk.mapLayer.draw();
-		diceText.setText('');
+    	});*/
+    	//text = "dice number \n" + "attacker: " + AttackerDice.toString() + "\ndefender: " + DefenderDice.toString();
+    	text = "Attacker and Defender rolls dice<br>" + "Attacker gets: " + AttackerDice.toString() + "<br>Defender gets: " + DefenderDice.toString();
+    	var displayResults = document.getElementById('result');
+		result.innerHTML = text;
+		showmodal();
+    	// diceText.setText(text);
+    	//Risk.mapLayer.add(diceText);
+    	//Risk.mapLayer.draw();
+		//diceText.setText('');
    	    Risk.attacker = null;
 	    Risk.defender = null;
 
