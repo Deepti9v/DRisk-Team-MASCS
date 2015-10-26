@@ -615,8 +615,7 @@ var Risk = {
     	});*/
     	//text = "dice number \n" + "attacker: " + AttackerDice.toString() + "\ndefender: " + DefenderDice.toString();
     	text = "Attacker and Defender rolls dice<br>" + "Attacker gets: " + AttackerDice.toString() + "<br>Defender gets: " + DefenderDice.toString();
-    	var displayResults = document.getElementById('result');
-		result.innerHTML = text;
+		document.getElementById('result').innerHTML = text;
 		showmodal();
     	// diceText.setText(text);
     	//Risk.mapLayer.add(diceText);
