@@ -544,28 +544,27 @@ var Risk = {
         while(Risk.Territories[Risk.attacker].armyNum != 1 && Risk.Territories[Risk.defender].armyNum != 0){
             AttackerDice = 1 + Math.floor(Math.random()*6);
             DefenderDice = 1 + Math.floor(Math.random()*6);
-            text = "Attacker and Defender rolls dice<br>Attacker gets: " + AttackerDice.toString() + "<br>Defender gets: " + DefenderDice.toString();
-            document.getElementById('result').innerHTML = text;
-
+			timedelay = 500;
+			round = 1
             if (AttackerDice > DefenderDice){
-            	text = "Attacker and Defender rolls dice<br>Attacker gets: " + AttackerDice.toString()
-            	+ "<br>Defender gets: " + DefenderDice.toString() + "<br>Defender loses an army";
-                document.getElementById('result').innerHTML = text;
+            	text = "<b><i>ROUND " + round.toString() + "</i></b><br>Attacker gets " + AttackerDice.toString() + ";    Defender gets: " + DefenderDice.toString() + "<br>Defender loses an army";
+                setTimeout(updateAttackModal(text),timedelay);
                 Risk.Territories[Risk.defender].armyNum -= 1;
                 Risk.Territories[Risk.defender].text.setText(Risk.Territories[Risk.defender].armyNum);
                 Risk.Territories[Risk.defender].group.moveTo(Risk.mapLayer);
                 Risk.topLayer.drawScene();
             }
             else{
-            	text = "Attacker and Defender rolls dice<br>Attacker gets: " + AttackerDice.toString()
-				+ "<br>Defender gets: " + DefenderDice.toString() + "<br>Attacker loses an army";
-				document.getElementById('result').innerHTML = text;
+            	text = "<b><i>ROUND " + round.toString() + "</i></b><br>Attacker gets " + AttackerDice.toString() + ";    Defender gets: " + DefenderDice.toString() + "<br>Defender loses an army";
+				setTimeout(updateAttackModal(text),timedelay);
                 Risk.Territories[Risk.attacker].armyNum -= 1;
                 Risk.Territories[Risk.attacker].text.setText(Risk.Territories[Risk.attacker].armyNum);
                 Risk.Territories[Risk.attacker].group.moveTo(Risk.mapLayer);
                 Risk.topLayer.drawScene();
             }
             Risk.stage.draw();
+            timedelay += 2000;
+            round += 1
         }
 
         Risk.Territories[Risk.attacker].path.setOpacity(0.4);
@@ -597,10 +596,8 @@ var Risk = {
             Risk.Territories[Risk.attacker].group.moveTo(Risk.mapLayer);
             Risk.mapLayer.draw();
             Risk.topLayer.drawScene();
-            text = "Attacker and Defender rolls dice<br>Attacker gets: " + AttackerDice.toString()
-			+ "<br>Defender gets: " + DefenderDice.toString() + "<br>Attacker wins! Defender loses the territory";
-			document.getElementById('result').innerHTML = text;
-            //Risk.stage.draw();
+            text = "<b><i>WAR OUTCOME</i></b><br>Attacker gets " + AttackerDice.toString() + ";    Defender gets " + DefenderDice.toString() + "<br>Attacker wins! Defender loses the territory";
+            setTimeout(updateAttackModal(text),timedelay);
         }
         else
         {
@@ -612,33 +609,9 @@ var Risk = {
             Risk.Territories[Risk.defender].group.moveTo(Risk.mapLayer);
             Risk.topLayer.draw();
             Risk.mapLayer.draw();
-            text = "Attacker and Defender rolls dice<br>Attacker gets: " + AttackerDice.toString()
-			+ "<br>Defender gets: " + DefenderDice.toString() + "<br>Defender wins! Attacker retreats back";
-			document.getElementById('result').innerHTML = text;
+            text = "<b><i>WAR OUTCOME</i></b><br>Attacker gets " + AttackerDice.toString() + ";    Defender gets " + DefenderDice.toString() + "<br>Defender wins! Attacker retreats back";
+			setTimeout(updateAttackModal(text),timedelay);
         }
-
-		/*
-		var diceText = new Kinetic.Text({
-        	text: "",
-        	x: 670,
-        	y: 80,
-            fontSize: 20,
-            fontFamily: 'Calibri',
-            fill: 'black',
-            shadowColor: 'red',
-    	});*/
-    	//text = "dice number \n" + "attacker: " + AttackerDice.toString() + "\ndefender: " + DefenderDice.toString();
-    	//text1 = "Attacker and Defender rolls dice<br>";
-    	//document.getElementById("dicemodal").innerHTML = text1;
-    	/*
-    	text = "Attacker and Defender rolls dice<br>Attacker gets: " + AttackerDice.toString() + "<br>Defender gets: " + DefenderDice.toString();
-		document.getElementById('result').innerHTML = text;
-		showmodal();
-		*/
-    	// diceText.setText(text);
-    	//Risk.mapLayer.add(diceText);
-    	//Risk.mapLayer.draw();
-		//diceText.setText('');
    	    Risk.attacker = null;
 	    Risk.defender = null;
 

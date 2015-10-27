@@ -1,7 +1,7 @@
 #dicemodal {
     visibility: hidden;
     position: absolute;
-    font-size: 30px;
+    font-size: 50px;
     left: 450px;
     top: 220px;
     width:50%;
@@ -12,18 +12,39 @@
     background-size: 100%;
     box-shadow: 0 10px 10px 5px black;
     border-radius: 60px/60px;
-    -webkit-transition: width 2s;
-    transition: width 2s;
+    color: #43a16f;
+    text-shadow: 3px 3px #303030;
 }
 
 #dicemodal div {
     width:600px;
     height: 150px;
-    font-size: 30px;
-    margin: 50px auto;
-    padding:15px;
+    font-size: 35px;
+    margin: 30px auto;
+    padding:5px;
     text-align:center;
     background: rgba(58, 34, 58, 0.4);
     text-shadow: 2px 2px #ff0000;
+    color: #330000;
 }
+
+.close {
+    position: absolute;
+    right: 30px;
+    bottom: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px/25px;
+}
+.close:hover {
+    width: 60px;
+    height: 60px;
+    -webkit-transform: rotate(-5deg);
+             -moz-transform: rotate(-5deg);
+               -o-transform: rotate(-5deg);
+              -ms-transform: rotate(-5deg);
+                  transform: rotate(-5deg);
+}
+
+
 
