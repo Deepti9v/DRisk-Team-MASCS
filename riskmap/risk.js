@@ -541,11 +541,12 @@ var Risk = {
         var DefenderDice ;
 
 		showmodal();
+		updateAttackModal("");
         while(Risk.Territories[Risk.attacker].armyNum != 1 && Risk.Territories[Risk.defender].armyNum != 0){
             AttackerDice = 1 + Math.floor(Math.random()*6);
             DefenderDice = 1 + Math.floor(Math.random()*6);
 			timedelay = 500;
-			round = 1
+			round = 1;
             if (AttackerDice > DefenderDice){
             	text = "<b><i>ROUND " + round.toString() + "</i></b><br>Attacker gets " + AttackerDice.toString() + ";    Defender gets: " + DefenderDice.toString() + "<br>Defender loses an army";
                 setTimeout(updateAttackModal(text),timedelay);
@@ -564,7 +565,7 @@ var Risk = {
             }
             Risk.stage.draw();
             timedelay += 2000;
-            round += 1
+            round += 1;
         }
 
         Risk.Territories[Risk.attacker].path.setOpacity(0.4);
@@ -612,6 +613,7 @@ var Risk = {
             text = "<b><i>WAR OUTCOME</i></b><br>Attacker gets " + AttackerDice.toString() + ";    Defender gets " + DefenderDice.toString() + "<br>Defender wins! Attacker retreats back";
 			setTimeout(updateAttackModal(text),timedelay);
         }
+
    	    Risk.attacker = null;
 	    Risk.defender = null;
 
