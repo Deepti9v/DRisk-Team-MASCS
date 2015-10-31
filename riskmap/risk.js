@@ -47,6 +47,10 @@ var Risk = {
 	remainArmies: 2,
 	currentPhase: 1,
 
+//	set territory map according to complexity: 1 = easy, 2 = medium, 3 = high
+//	use setTerritoryMap(complexity) to set
+	currentTerritoryMap: TerritoryNames, // this is the default map
+
 
 	init: function() {
 		//Initiate our main Territories Object, it contains essential data about the territories current state
@@ -79,11 +83,28 @@ var Risk = {
 //		Risk.divideTerritories();
 	},
 
+
+	setTerritoryMap: function(complexity) {
+		switch(complexity) {
+			case(1):
+				Risk.currentTerritoryMap = TerritoryNamesForEasy;
+				break;
+
+			case(2):
+				Risk.currentTerritoryMap = TerritoryNamesForMedium;
+                break;
+
+            case(3):
+            	Risk.currentTerritoryMap = TerritoryNamesForHard;
+                break;
+		}
+	},
+
 	/**
 	 * Initiate the  Risk.Territories Object, this will contain essential informations about the territories 
 	 */
 	setUpTerritoriesObj: function() {
-		for(id in TerritoryNames) {
+		for(id in Risk.currentTerritoryMap) {
 
 			var pathObject = new Kinetic.Path({
 				data: TerritoryPathData[id].path,
@@ -123,7 +144,7 @@ var Risk = {
 			var group = new Kinetic.Group();
 
 			Risk.Territories[id] = {
-				name: TerritoryNames[id],
+				name: Risk.currentTerritoryMap[id],
 				path: pathObject,
 				nameImg: territoryNameImg,
 				color: null,
@@ -140,7 +161,7 @@ var Risk = {
 		var colors = ['yellow', 'green', 'blue', 'red', 'purple', 'cyan'];
 		for (i = 0; i < Risk.userNumber; i++) {
 			var territories = [];
-			for (t in TerritoryNames) {
+			for (t in Risk.Territories) {
 				territories[t] = false;
 			}
 			Risk.Users[i] = {
@@ -825,61 +846,6 @@ var Risk = {
 //
 		});
 
-	},
-
-	divideTerritories: function() {
-
-		fillRandomColors();
-
-		for(var id in Risk.Territories) {
-			var color = Risk.Territories[id].color;
-			
-			var neighbours = Risk.Territories[id].neighbours;
-
-			//a VERY simple algorithm to make the map more equal
-			var similarNeighbours = 0;
-			for(var i = 0; i < neighbours.length; i++) {
-
-				var currNeighbour = neighbours[i];
-				if (Risk.Territories[currNeighbour].color == color) {
-					similarNeighbours++;
-				}
-			}
-
-			//how many similar neighbours we allow
-			if (similarNeighbours > 2) {
-				var newColor = getRandomColor();
-				while (color == newColor) {
-					var newColor = getRandomColor();
-				}
-				Risk.Territories[id].color = newColor;
-
-				Risk.Territories[id].path.setFill(Risk.Settings.colors[newColor]);
-				Risk.Territories[id].path.setOpacity(0.4);				
-			}
-		}
-
-		Risk.mapLayer.draw();
-
-		function fillRandomColors() {
-			for(var id in Risk.Territories) {
-				var color = getRandomColor();
-				Risk.Territories[id].color = color;
-				Risk.Territories[id].path.setFill(Risk.Settings.colors[color]);
-				Risk.Territories[id].path.setOpacity(0.4);			
-
-			}
-		}
-
-		/**
-		 * Returns a color name like 'yellow'
-		 */
-		function getRandomColor() {
-			var colors = ['yellow', 'green', 'blue'];
-			//Math.random() returns between [0, 1), so don't worry
-			var randomNum = Math.floor(Math.random()*(colors.length)); 
-			return colors[randomNum];
-		}
 	},
 
 }
