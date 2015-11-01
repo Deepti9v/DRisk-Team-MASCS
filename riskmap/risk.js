@@ -1,3 +1,4 @@
+
 var Risk = {
 
 	/**
@@ -47,9 +48,10 @@ var Risk = {
 	remainArmies: 2,
 	currentPhase: 1,
 
+
 //	set territory map according to complexity: 1 = easy, 2 = medium, 3 = high
 //	use setTerritoryMap(complexity) to set
-	currentTerritoryMap: TerritoryNames, // this is the default map
+//	currentTerritoryMap: TerritoryNames, // this is the default map
 
 
 	init: function() {
@@ -83,7 +85,7 @@ var Risk = {
 //		Risk.divideTerritories();
 	},
 
-
+	/*
 	setTerritoryMap: function(complexity) {
 		switch(complexity) {
 			case(1):
@@ -99,12 +101,13 @@ var Risk = {
                 break;
 		}
 	},
+	*/
 
 	/**
 	 * Initiate the  Risk.Territories Object, this will contain essential informations about the territories 
 	 */
 	setUpTerritoriesObj: function() {
-		for(id in Risk.currentTerritoryMap) {
+		for(id in TerritoryNames) {
 
 			var pathObject = new Kinetic.Path({
 				data: TerritoryPathData[id].path,
@@ -144,7 +147,8 @@ var Risk = {
 			var group = new Kinetic.Group();
 
 			Risk.Territories[id] = {
-				name: Risk.currentTerritoryMap[id],
+				//name: Risk.currentTerritoryMap[id],
+				name: TerritoryNames[id],
 				path: pathObject,
 				nameImg: territoryNameImg,
 				color: null,
@@ -179,7 +183,21 @@ var Risk = {
 			scale: Risk.Settings.globalScale
 		});
 		var imgObj = new Image();
-		imgObj.src = 'img/map_grey.jpg';
+
+		//imgObj.src = 'img/map_grey.jpg';
+
+		switch(complexityLevel){
+			case 1:
+			 	imgObj.src = 'img/complexity1.jpg';
+				break;
+			case 2:
+				imgObj.src = 'img/complexity2.jpg';
+				break;
+
+			case 3:
+			 	imgObj.src = 'img/map_grey.jpg';
+				break;
+		}
 		
 		var img = new Kinetic.Image({
 			image: imgObj,

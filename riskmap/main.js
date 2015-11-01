@@ -5,7 +5,20 @@ otherwise the map would be imperfect (some images may not appear or load slowly)
 
 var ASSET_MANAGER = new AssetManager();
 
-ASSET_MANAGER.queueDownload('img/map_grey.jpg');
+switch(complexityLevel){
+	case 1:
+		ASSET_MANAGER.queueDownload('img/complexity1.jpg');
+		break;
+
+	case 2:
+	 	ASSET_MANAGER.queueDownload('img/complexity2.jpg');
+		break;
+
+	case 3:
+		ASSET_MANAGER.queueDownload('img/map_grey.jpg');
+		break;
+}
+
 ASSET_MANAGER.queueDownload('img/names.png');
 
 ASSET_MANAGER.downloadAll(function() {
