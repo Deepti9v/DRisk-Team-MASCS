@@ -55,6 +55,7 @@ var Risk = {
 
 
 	init: function() {
+		Risk.userNumber = Usernumber;
 		//Initiate our main Territories Object, it contains essential data about the territories current state
 		Risk.setUpTerritoriesObj();
 		Risk.setUpUsersObj();
@@ -185,7 +186,7 @@ var Risk = {
 		var imgObj = new Image();
 
 		//imgObj.src = 'img/map_grey.jpg';
-
+		//complexityLevel = complexity;
 		switch(complexityLevel){
 			case 1:
 			 	imgObj.src = 'img/complexity1.jpg';

@@ -1,4 +1,4 @@
-var complexityLevel= 3;
+var complexityLevel = parseInt(complexity);
 
 switch(complexityLevel){
 	case 1:
