@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 include "MysqlOperation.php";
 define('DB_HOST', 'localhost');  
 define('DB_USER', 'root');  
@@ -58,3 +59,21 @@ echo "</table>";
 mysql_free_result($result);  
 mysql_close($conn);  
 ?>
+=======
+$num = $_POST["num"];
+require 'connect.inc.php';
+$query = "SELECT * FROM `users` WHERE `ID` = '".$num."'";
+
+if ($query_run = mysqli_query($con, $query)) {
+	$row=mysqli_fetch_assoc($query_run);
+	# change print style to match dispaly!
+	print_r($row);
+
+
+}	else {
+	echo 'query failed';
+}
+
+?>
+	
+>>>>>>> origin/master
